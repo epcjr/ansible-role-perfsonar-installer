@@ -1,0 +1,29 @@
+---
+# tasks file for RedHat.yml
+
+# Setup the required repositories
+- name: (RedHat) Add EPEL repository
+  yum:
+    name: epel-release
+    state: latest
+
+- name: (RedHat) Add perfSONAR repository
+  yum:
+    name: http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
+    state: present
+
+- name: (RedHat) Use perfSONAR staging or nightly repository
+  yum:
+    name: perfSONAR-repo-{{ perfsonar_release }}
+    state: present
+  when:
+    - perfsonar_release == "staging" or perfsonar_release == "nightly"
+
+# Make sure we have the latest upgrades installed
+- name: (RedHat) Install system updates
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+  ignore_errors: True
+  when: perfsonar_os_update == True

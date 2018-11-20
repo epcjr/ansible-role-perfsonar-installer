@@ -1,0 +1,29 @@
+---
+# tasks file for Debian.yml
+
+# Setup the required repositories
+- name: (Ubuntu) Make sure the universe repo is enabled
+  # It is better to use add-apt-repository rather than the apt_repository
+  # module from Ansible.  This command will NOT duplicate an already existing
+  # universe repo setup using a mirror.
+  shell: LANGUAGE=C add-apt-repository universe
+  when: ansible_distribution == "Ubuntu"
+  register: universe_output
+  changed_when: universe_output.stdout != "'universe' distribution component is already enabled for all sources."
+
+- name: (Debian) Import perfSONAR repository signing key
+  apt_key:
+    url: http://downloads.perfsonar.net/debian/perfsonar-{{ perfsonar_release }}.gpg.key
+    state: present
+
+- name: (Debian) Add perfSONAR repository
+  apt_repository:
+    repo: deb http://downloads.perfsonar.net/debian/ perfsonar-{{ perfsonar_release }} main
+    state: present
+
+- name: (Debian) Install system updates
+  apt:
+    upgrade: dist
+    update_cache: yes
+  ignore_errors: True
+  when: perfsonar_os_update == True

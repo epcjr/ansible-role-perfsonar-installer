@@ -1,0 +1,20 @@
+---
+# tasks file for perfsonar-installer
+
+# Install the perfsonar repos and base OS updates
+- name: "{{ ansible_os_family }} Install"
+  include_tasks: "{{ ansible_os_family }}.yml"
+  tags: [ 'ps::install' ]
+
+- name: Install perfSONAR bundle {{ perfsonar_bundle }}
+  package:
+    name: "{{ perfsonar_bundle }}"
+    state: latest
+  tags: [ 'ps::install' ]
+
+- name: Install perfSONAR additional packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  tags: [ 'ps::install' ]
+  with_items: "{{ perfsonar_optional_packages | default([]) }}"
