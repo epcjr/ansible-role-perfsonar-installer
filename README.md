@@ -21,6 +21,9 @@ Role Variables
 The following variables can/should be defined for your host setup:
 
   - `perfsonar_os_update` defaults to True.  This causes the base OS to be updated.
+  - `perfsonar_bundle` must be set by the inheriting role.
+  - `perfsonar_optional_packages` May be set by the inherting role.  It is a list of additional packages to install.
+  - `perfsonar_release` defaults to release.  "staging" and "nightly" are optional.
 
 - Some other variables are defined at the end of `default/main.yml` and in `vars/Debian.yml` and `vars/RedHat.yml` (those contains distro specific settings), but shouldn't need to be altered for a regular install.
 
