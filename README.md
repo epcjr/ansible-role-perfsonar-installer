@@ -1,7 +1,7 @@
-perfSONAR-testpoint Ansible role
+perfSONAR-installer Ansible role
 ================================
 
-This roles installs and configure a perfSONAR testpoint.
+This roles installs a perfSONAR bundle, and additional support packages.
 
 Requirements
 ------------
@@ -21,12 +21,8 @@ Role Variables
 The following variables can/should be defined for your host setup:
 
   - `perfsonar_os_update` defaults to True.  This causes the base OS to be updated.
-  - `perfsonar_ntp_servers` is a list of NTP servers to configure on the perfSONAR testpoint, or an empty list, per default, if you want to use the perfSONAR provided NTP servers.
-  - `perfsonar_disable_root_ssh` disable or keep ssh root access, the default is to disable it.
-  - `perfsonar_psconfig_remote_remotes` list the URL of remote templates that should be added or deleted from each testpoint host.
-  - `perfsonar_psconfig_remote_options` contains the options to add to the `psconfig remote add` command.
 
-  - Some other variables are defined at the end of `default/main.yml` and in `vars/Debian.yml` and `vars/RedHat.yml` (those contains distro specific settings), but shouldn't need to be altered for a regular install.
+- Some other variables are defined at the end of `default/main.yml` and in `vars/Debian.yml` and `vars/RedHat.yml` (those contains distro specific settings), but shouldn't need to be altered for a regular install.
 
 Role Tags
 ---------
@@ -34,18 +30,6 @@ Role Tags
 Some tags are used in the role, they are meant to run only or skip part of the process.  The following tags are existing:
 
   - `ps::install` : only install perfSONAR packages and their dependencies
-  - `ps::config` : only configure any already installed perfSONAR package
-  - `ps::running` : checks that your perfSONAR node is running as intended
-
-Examples,
-
-  - If you only want to install the perfSONAR software without configuring it automatically, you can run:
-
-        ansible-playbook site.yml --tags "ps::install"
-
-  - If you have already installed the perfSONAR packages and you only want to change an already existing config, you can run:
-
-        ansible-playbook site.yml --skip-tags "ps::install"
 
 Dependencies
 ------------
@@ -55,11 +39,7 @@ None.
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - role: perfsonar-testpoint
+This role is meant to be inherited by other roles.
 
 License
 -------
